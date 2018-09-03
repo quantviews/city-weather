@@ -10,7 +10,7 @@ AVG_YEARS = 15
 YEAR = as.numeric(format(Sys.Date(), '%Y'))
 
 #create list of hc's
-hc_list <- vector(mode="list", length=length(stations))
+hc_list <- vector(mode="list", length = length(stations))
 names(hc_list) <- stations
 
 for(i in 1:length(stations)){
@@ -22,7 +22,7 @@ for(i in 1:length(stations)){
    data = arrange_weather_data(city = city, year = YEAR)
    hc  = chart_tufte_weather(data)
    cur_date <- data$date[which(is.na(data$temp_avg))[1]]
-   hc  = hc_subtitle(hc, text = paste0(' �� ��������� �� ', cur_date), align = "left")
+   hc  = hc_subtitle(hc, text = paste0(' по состоянию на ', cur_date), align = "left")
    hc = hc %>% hc_exporting(enabled = TRUE)
    #hc_list = hc_list + hc
    hc_list[[i]] = hc
@@ -47,8 +47,8 @@ save.image('data.RData')
 # p + geom_line(aes(color=current_year, size = current_year ))+theme_minimal()+scale_alpha("year")+
 #    scale_colour_manual(values = c("TRUE" = "#358a81", "FALSE" = 'grey85'))+
 #    scale_size_manual(values = c("TRUE" = 1.0, "FALSE" = 0.2))+
-#    theme(legend.position="none")+ylab('градусов Цельсия')+xlab(NULL)+
-#    ggtitle('Температура в Москве в 2018 году')+
+#    theme(legend.position="none")+ylab('РіСЂР°РґСѓСЃРѕРІ Р¦РµР»СЊСЃРёСЏ')+xlab(NULL)+
+#    ggtitle('РўРµРјРїРµСЂР°С‚СѓСЂР° РІ РњРѕСЃРєРІРµ РІ 2018 РіРѕРґСѓ')+
 #    theme(axis.title.x=element_blank(),
 #          axis.text.x=element_blank(),
 #          axis.ticks.x=element_blank())+

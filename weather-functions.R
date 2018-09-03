@@ -9,6 +9,7 @@ library(forcats)
 require(readxl)
 require(stringr)
 require(data.table)
+library(rlist)
 ## input data
 
 #rm(list=ls()) # remove all vars 
@@ -32,13 +33,20 @@ munge_weather_data <- function(code){
    files = list.files(paste0('data_out/', code))
    years = as.numeric(str_extract_all(files, '[0-9]{4}')) # extract years from characters
    files = files[(years<=YEAR)&(years>=YEAR-AVG_YEARS)]
-   city = fread(paste0('data_out/',ID,'/',files[1]))
-   for(file in files[-1]){
-      df = data.table::fread(paste0('data_out/',ID,'/',file))
-      #df = read.csv(paste0('data_out/',ID,'/',file))
-      city = plyr::rbind.fill(city, df)
-   
-   }
+   files = paste0('data_out/',ID,'/', files[files %like% "csv"])
+   xlsx_tables <- lapply(files, fread)
+   city <- xlsx_tables %>% list.stack(data.table = T)
+   names(city)[3] = 'temp_avg'
+   # city = fread(paste0('data_out/',ID,'/',files[1]))
+   # 
+   # 
+   # for(file in files[-1]){
+   #    df = data.table::fread(paste0('data_out/',ID,'/',file))
+   #    #df = read.csv(paste0('data_out/',ID,'/',file))
+   #    city = plyr::rbind.fill(city, df)
+   # 
+   # }
+   # 
    city$date <-  as.Date(ISOdate(as.numeric(city$year), as.numeric(city$month), as.numeric(city$day)))
    city = city[order(city$date),]
    names(city)[3] = 'temp_avg'
@@ -89,18 +97,19 @@ arrange_weather_data <- function(city, year = 2018){
    city = merge(city, bb[,c('date', 'temp_rec_low')], by = 'date', all.x=TRUE)
    
    avgs = city %>% 
-      filter(year>= year - AVG_YEARS) %>%
+      filter(year >= year - AVG_YEARS) %>%
       group_by(day, month) %>% 
       summarise(temp_avg_max = mean(temp_max, na.rm=TRUE),
                 temp_avg_min = mean(temp_min, na.rm=TRUE),
                 temp_rec_max = max(temp_max, na.rm=TRUE),
                 temp_rec_min = min(temp_min, na.rm=TRUE))
    
-   city = merge(city,avgs, by = c('month', 'day'))
+   city = merge(city, avgs, by = c('month', 'day'))
    
    city = city[order(city$date,decreasing = TRUE),]
    
-   data = city %>% filter(year == YEAR)
+   data = city[city$year == year,]
+   #data = city %>% filter(year == year)
    #data = city[city$year == year,]
    
    data <- mutate(data, dt = highcharter::datetime_to_timestamp(date))
@@ -121,7 +130,7 @@ chart_tufte_weather <- function(data){
    
    data$dt <- datetime_to_timestamp(data$date)
    # прошлый год = data_1
-   data_1 = arrange_weather_data(city, year = YEAR-1)
+   data_1 = arrange_weather_data(city, year = YEAR - 1)
    data_1 = data_1[!is.na(data_1$date),]
    data_1 <- data_1[,c('day', "month", 'temp_avg')]
    names(data_1) <- c('day',"month", 'temp_avg_prev')

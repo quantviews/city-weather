@@ -22,9 +22,11 @@ for(i in 1:length(stations)){
    data = arrange_weather_data(city = city, year = YEAR)
    hc  = chart_tufte_weather(data)
    cur_date <- data$date[which(is.na(data$temp_avg))[1]]
-   hc  = hc_subtitle(hc, text = paste0('до ', cur_date), align = "left")
+   hc  = hc_subtitle(hc, text = paste0(' по состоянию на ', cur_date), align = "left")
+   hc = hc %>% hc_exporting(enabled = TRUE)
    #hc_list = hc_list + hc
    hc_list[[i]] = hc
+   
    #cities$hc[i] = hc
    
 }

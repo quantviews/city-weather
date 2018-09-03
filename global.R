@@ -1,13 +1,10 @@
 library(shiny)
 library(shinythemes)
 library(highcharter)
-library(readr)
 library(dplyr)
-library(tidyr)
-library(stringr)
+library(tibble)
 #library(forcats)
-library(purrr)
-library(rmarkdown)
+
 
 source('weather-functions.R', encoding = 'UTF-8')
 load('data.RData')

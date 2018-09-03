@@ -4,7 +4,7 @@ library(zoo)
 library(tibble)
 library(rvest)
 
-cities <- as.tibble(readxl::read_xlsx('xls/cities.xlsx'))
+cities <- as.tibble(readxl::read_xlsx('cities.xlsx'))
 cities$meteo_station <- as.character(cities$meteo_station)
 nm = c('day', 'month', 'year', 'temp_min', 'tem_avg', 'temp_max', 'temp_diff', 'precip_mm')
 mainDir <-  'data_out/'
@@ -27,7 +27,7 @@ folders <- list.dirs(mainDir)[-1]
 folder = folders[1]
 year <- format(Sys.Date(), '%Y')
 month <- as.numeric(format(Sys.Date(), '%m'))
-if(as.numeric(format(Sys.Date()-1, '%m')) == month-1) month = month-1
+if(as.numeric(format(Sys.Date()-1, '%m')) == month-1) month = month-1 # for the last day of the month
 
 for(station in stations){
    cat(station, '\n')

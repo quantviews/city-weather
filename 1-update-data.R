@@ -4,6 +4,8 @@ library(zoo)
 library(tibble)
 library(rvest)
 
+if(Sys.info()["sysname"] == "Linux") setwd('/srv/shiny-server/city-weather')
+
 cities <- as.tibble(readxl::read_xlsx('cities.xlsx'))
 cities$meteo_station <- as.character(cities$meteo_station)
 nm = c('day', 'month', 'year', 'temp_min', 'tem_avg', 'temp_max', 'temp_diff', 'precip_mm')

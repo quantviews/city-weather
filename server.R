@@ -1,5 +1,6 @@
 
 shinyServer(function(input, output) {
+   load('data.RData')
    code <- reactive({
       code = which(cities$city == input$city)
       

@@ -9,7 +9,6 @@ library(forcats)
 
 #options(encoding = 'UTF-8')
 source('weather-functions.R', encoding = 'UTF-8')
-load('data.RData')
 
 options(highcharter.theme = hc_theme_smpl())
 options(shiny.launch.browser = TRUE)

@@ -212,7 +212,7 @@ chart_tufte_weather <- function(data){
       symbol = "circle",
       lineWidth= 1,
       radius= 4,
-      fillColor= "#bc0909",
+      fillColor= "#FFFFFF",
       lineColor= "#bc0909"
    )
    
@@ -220,7 +220,7 @@ chart_tufte_weather <- function(data){
       symbol = "circle",
       lineWidth= 1,
       radius= 4,
-      fillColor= "#0099CC",
+      fillColor= "#FFFFFF",
       lineColor= "#0099CC"
    )
    
